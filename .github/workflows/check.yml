@@ -1,4 +1,6 @@
 name: Blog check
+# Note: a cancelled run (a newer push arrives) can skip the "Last updated"
+# reminders for the cancelled push.
 on:
   push:
     branches: [main]
@@ -6,7 +8,6 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
-  issues: write
 concurrency:
   group: blog-check-${{ github.ref }}
   cancel-in-progress: true
@@ -14,17 +15,22 @@ jobs:
   check:
     runs-on: ubuntu-latest # GitHub-hosted only
     timeout-minutes: 15
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           path: content
           fetch-depth: 0
-      - uses: actions/checkout@v4
+          filter: blob:none
+          persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           repository: lidradmin/lidr.io
           ref: main
           path: site
-      - uses: actions/setup-node@v4
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
           cache: npm
@@ -42,12 +48,48 @@ jobs:
           SINCE=""
           if [ "${{ github.event_name }}" = "push" ] && [ -n "$BEFORE" ] && [ "$BEFORE" != "0000000000000000000000000000000000000000" ]; then SINCE="--since $BEFORE"; fi
           npx tsx scripts/blog/prepare.ts --check --report "$GITHUB_WORKSPACE/report.json" $SINCE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: blog-report
+          path: report.json
+          retention-days: 7
+      - name: Fail if a post can't go live
+        if: github.event_name != 'push'
+        working-directory: site
+        run: npx tsx scripts/blog/notify.ts --report "$GITHUB_WORKSPACE/report.json" --fail-on-hard
+  notify:
+    needs: check
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest # GitHub-hosted only
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          repository: lidradmin/lidr.io
+          ref: main
+          path: site
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
+        working-directory: site
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: blog-report
+          path: ${{ github.workspace }}
       - name: Tell authors (GitHub Issues)
-        if: github.event_name == 'push'
         working-directory: site
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BLOG_AUTHOR: ${{ github.event.head_commit.author.username }}
+          BLOG_AUTHOR: ${{ github.actor }}
           BLOG_OWNER: ${{ vars.BLOG_OWNER }}
         run: npx tsx scripts/blog/notify.ts --report "$GITHUB_WORKSPACE/report.json" --repo "$GITHUB_REPOSITORY" --sha "$GITHUB_SHA"
       - name: Fail if a post can't go live
