@@ -69,4 +69,4 @@ To fix it, open the link in the email, go back to the editor, make the change an
 
 ## 8. Writing with Claude
 
-You can get help drafting a post from Claude. For Claude.ai, follow https://github.com/lidradmin/lidr-blog/blob/main/docs/claude-instructions.md. The Claude Code route is for technical users: see `docs/claude-code.md`.
+You can get help drafting a post from Claude. Before you publish a Claude draft, delete or fill in anything in square capitals, such as [NEEDS SOURCE]. lidr.io won't publish a post that still has one, and you'll get a "Post needs attention" Issue instead. For Claude.ai, follow https://github.com/lidradmin/lidr-blog/blob/main/docs/claude-instructions.md. The Claude Code route is for technical users: see `docs/claude-code.md`.
