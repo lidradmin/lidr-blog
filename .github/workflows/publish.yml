@@ -1,0 +1,23 @@
+name: Publish to lidr.io
+on:
+  push:
+    branches: [main]
+    paths: ["posts/**", "images/**", "tags.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: publish
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # GitHub-hosted only
+    timeout-minutes: 5
+    steps:
+      - name: Rebuild lidr.io with the new content
+        env:
+          HOOK: ${{ secrets.CF_DEPLOY_HOOK }}
+        run: |
+          test -n "$HOOK" || { echo "CF_DEPLOY_HOOK secret is not set (see lidr.io docs/blog-setup.md)"; exit 1; }
+          curl -fsS -X POST "$HOOK" > /dev/null
+          echo "Build started. Live in about 3 minutes."
