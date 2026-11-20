@@ -8,7 +8,7 @@ tags:
   - reporting
 cover: /images/blog/connector-test-2-please-ignore/rebar-cage-slab.jpg
 coverAlt: Black and white photo of a reinforced concrete beam rebar cage tied into a slab reinforcement mesh before the pour
-draft: false
+draft: true
 ---
 Site photo timestamps turn a picture into evidence. A photo of a rebar cage shows what was built. A timestamped photo shows what was built, and when, before the concrete went in and covered it for good. Without the date and time, a site photo is a nice picture. With them, it is a record.
 
