@@ -7,18 +7,22 @@ your photos — straight to lidr.io, as you. You don't need the editor.
 
 1. You need a GitHub account that's been invited to **lidr-blog** (see the
    authoring guide, section 1).
-2. In Claude (claude.ai or the Claude app): **Settings → Customize →
-   Connectors → Add → Add custom connector**.
+2. In Claude (claude.ai): open **Settings → Plugins**, click **Add → Add
+   custom connector** (on some accounts it's **Settings → Customize →
+   Connectors → Add**).
    - Name: `Lidr Blog`
    - URL: `https://mcp.lidr.io/mcp`
-   - Click **Add**, then **Connect**. A Lidr page opens: click **Continue
-     with GitHub**, then **Authorize** if GitHub asks.
+   - Click **Add**. A Lidr page opens: click **Continue with GitHub**, then
+     **Authorize** if GitHub asks. You're sent back to Claude and "Lidr Blog"
+     appears in your list.
    - On a company Claude plan (Team/Enterprise), only an owner of that plan
      can add custom connectors. Use a personal Claude account, or ask them.
    - The Free plan allows one custom connector.
-3. For photos only: **Settings → Capabilities → Code execution and file
-   creation** must be on, with network access allowed for `mcp.lidr.io`
-   (add it to the allowed domains, or allow all domains).
+3. **For photos:** Settings → **Capabilities** → under **Create and edit
+   files**, turn on **Use the internet while making files**, then **Allowed
+   websites → Manage**, type `mcp.lidr.io` and click **Add**. Start a new chat
+   after changing this. Without it, Claude publishes the post without your
+   photo and tells you.
 
 ## Writing a post
 
