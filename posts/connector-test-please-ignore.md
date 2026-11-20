@@ -6,7 +6,7 @@ tags:
   - site-photos
 cover: /images/blog/connector-test-please-ignore/rebar-cage.jpg
 coverAlt: Steel reinforcement bars tied into a column cage
-draft: false
+draft: true
 ---
 This is a test post published by the Lidr Blog connector. It checks that a photo uploaded from Claude's sandbox arrives without location data.
 
