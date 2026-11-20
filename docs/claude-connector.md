@@ -1,0 +1,56 @@
+# Publishing with Claude (no copy and paste)
+
+The **Lidr Blog connector** lets Claude write, check and publish a post — with
+your photos — straight to lidr.io, as you. You don't need the editor.
+
+## One-time setup
+
+1. You need a GitHub account that's been invited to **lidr-blog** (see the
+   authoring guide, section 1).
+2. In Claude (claude.ai or the Claude app): **Settings → Customize →
+   Connectors → Add → Add custom connector**.
+   - Name: `Lidr Blog`
+   - URL: `https://mcp.lidr.io/mcp`
+   - Click **Add**, then **Connect**. A Lidr page opens: click **Continue
+     with GitHub**, then **Authorize** if GitHub asks.
+   - On a company Claude plan (Team/Enterprise), only an owner of that plan
+     can add custom connectors. Use a personal Claude account, or ask them.
+   - The Free plan allows one custom connector.
+3. For photos only: **Settings → Capabilities → Code execution and file
+   creation** must be on, with network access allowed for `mcp.lidr.io`
+   (add it to the allowed domains, or allow all domains).
+
+## Writing a post
+
+Start a new chat, attach any photos, and ask, for example:
+
+> Write and publish a post about how to photograph a snagging walkthrough for
+> site managers. Target search phrase: snagging photos. Use the attached photo
+> as the cover.
+
+Claude will look at the existing posts, write the post, check it against the
+site's rules, remove the location from your photos, upload them, publish, and
+give you the link. It's live in about 3 minutes.
+
+The first time, Claude asks permission to use each Lidr Blog tool. Choose
+**Always allow** if you're happy for it to publish without asking each time.
+
+**Nobody reviews posts before they go live.** Read what Claude wrote before
+you let it publish, or ask it to show you the post first.
+
+## Changing or taking down a post
+
+- "Update the snagging photos post: add a section on …" — Claude republishes
+  it with today's "last updated" date.
+- "Hide the post about …" — it disappears from lidr.io. Nothing is deleted.
+
+## If something goes wrong
+
+- **"You can't publish to the blog yet"** when connecting: you haven't been
+  invited to lidr-blog, or haven't accepted the invite.
+- **Photos didn't upload:** check the code execution network setting in step 3.
+  Claude publishes without the photo and tells you.
+- **"Reconnect the Lidr Blog connector":** go to Settings → Customize →
+  Connectors → Lidr Blog → Connect.
+- Problems found after publishing arrive as a GitHub email, "Post needs
+  attention", exactly as with the editor.
